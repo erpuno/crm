@@ -1,0 +1,10 @@
+{application, crm,
+ [
+  {description, "CRM: Customer Relationship Management"},
+  {vsn, "0.2"},
+  {registered, []},
+  {applications, [kernel,stdlib]},
+  {mod, { erp, []}},
+  {env, []}
+ ]}.
+

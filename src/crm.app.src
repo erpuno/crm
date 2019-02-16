@@ -4,7 +4,7 @@
   {vsn, "0.2"},
   {registered, []},
   {applications, [kernel,stdlib]},
-  {mod, { erp, []}},
+  {mod, { crm, []}},
   {env, []}
  ]}.
 

@@ -3,7 +3,7 @@
   {description, "CRM Customer Relationship Management"},
   {vsn, "0.2"},
   {registered, []},
-  {applications, [kernel,stdlib, kvx]},
+  {applications, [kernel,stdlib,kvs]},
   {mod, { crm, []}},
   {env, []}
  ]}.

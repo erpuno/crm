@@ -1,0 +1,154 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="CRM Index" />
+<meta name="author" content="Maxim Sokhatsky" />
+<title>СЕВ</title>
+    <link rel="stylesheet" href="https://n2o.dev/blank.css" />
+</head>
+<body>
+<nav>
+    <a href="https://erp.uno">ERP</a>
+    <a href="../index.html">CRM</a>
+    <a href="#" style="background:#ededed;">SEV</a>
+</nav>
+<header>
+    <a href="https://github.com/erpuno/crm">
+    <img src="../img/logo.svg" /></a>
+    <h1>СЕВ</h1>
+</header>
+<aside>
+    <article>
+         <section>
+              <h3>СИНОПСИС</h3>
+              <div>Підсистема підтримки протоколу СЕВ ОВВ 2.0.</div><br/>
+<!--figure><code>$ mix deps.get
+$ iex -S mix
+$ open http://localhost:8050/app/crm.htm</code></figure-->
+            <br />
+            <div>СІЧ 2020 © <a href="https://github.com/5HT">Намдак Тонпа</a> ISC</div>
+            </section>
+    </article>
+</aside>
+<main>
+<article>
+  <section>
+    <h3>СЕВ ОВВ 2.0 Клієнт</h3>
+
+<p>Бібліотека підтримки національного сервісу СЕВ ОВВ
+версії 2.0 (dir.gov.ua) для розробників та інтеграторів СЕД систем
+на мовах Erlang і Elixir. Сервіс верхнього рівня складається з наступних функцій:</p>
+
+<ul><li><b>inbox</b> from, count=100</li>
+<li><b>send</b> from, to, document</li>
+<li><b>ack</b> from, to, msg_id, type, regnum=""</li>
+<li><b>download</b> from, msg_id, delete=1</li>
+<li><b>download_all</b> from</li></ul>
+
+<h4>Перевірка вхідної скриньки облікового запису</h4>
+
+<p>Перший параметр -- ЄРДПО оргназації зареєстрованої в СЕВ.
+Другий параметр -- перші N повідомлень, які цікавлять.</p>
+
+<figure><code>
+> SEV.inbox "34239035"
+{:incoming,
+ [
+   CreationDate: "2020-02-10T05:25:21Z",
+   Creator: "Sev",
+   Format: "Plain",
+   FromOrgId: "34239036",
+   FromSysId: "fcabd96e-06b5-47c3-801c-b5da8caab7c7",
+   MessageId: "49DF6EA1-1783-4279-AE32-1152E2202B2B",
+   Size: "226716",
+   ToOrgId: "34239035",
+   ToSysId: "99999999",
+   Type: "Document"
+ ]}
+</code></figure>
+
+<h4>Завантаження повідомлення</h4>
+
+<p>Перший параметр -- ЄРДПО оргназації зареєстрованої в СЕВ.</p>
+
+<figure><code>
+> SEV.download "34239035", "49DF6EA1-1783-4279-AE32-1152E2202B2B"
+{:downloading, #PID<0.926.0>}
+iex(26)>
+03:28:00.860 [info]  SEV {partial,{download,226716,0,226716,<<"37851912">>,226716,0}}
+03:28:05.686 [info]  SEV {final,{download,226716,226716,0,<<"37851912">>,0,0}}
+03:28:05.844 [info]  SEV hash verified 49DF6EA1-1783-4279-AE32-1152E2202B2B
+nil
+</code></figure>
+
+<h4>Вивантаження повідомлення</h4>
+
+<p>Перший параметр -- ЄРДПО оргназації зареєстрованої в СЕВ від імені якої посилається повідомлення.
+Другий параметр -- ЄРДПО оргназації зареєстрованої в СЕВ, адресату повідомлення.
+Третій параметр -- Бізнес-об'єкт документу як Erlang кортеж.</p>
+
+<figure><code>
+defmodule Test do
+  require ERP
+  def testDoc(guid) do
+    ERP.sevDoc(
+      date: "2020-02-10",
+      id: "12/19/12-15",
+      kind: "Лист",
+      annotation: "Інформування",
+      msg_type: 1,
+      msg_acknow: 2,
+      guid: guid,
+      attachments: [
+        ERP.fileDesc(
+          id: :sev.guid(),
+          seq_id: 1000,
+          fileName: "Повідомлення.pdf",
+          signed: "2020-02-10T13:12:07",
+          type: "pdf"
+        )
+      ]
+    )
+  end
+end
+</code></figure>
+
+<figure><code>
+> SEV.send "34239035", "34239036", Test.testDoc(:sev.guid)
+{:uploading, #PID<0.954.0>}
+iex(28)>
+03:29:52.332 [info]  SEV {partial,{upload,6428292,0,2500000,<<"37851914">>,6428292}}
+03:29:54.370 [info]  SEV {partial,{upload,6428292,2500000,2500000,<<"37851914">>,3928292}}
+03:29:56.379 [info]  SEV {partial,{upload,6428292,5000000,1428292,<<"37851914">>,1428292}}
+03:30:04.454 [info]  SEV {final,{upload,6428292,6428292,0,<<"37851914">>,0}}
+03:30:04.779 [info]  SEV 91844747-BF51-4804-895E-3A6844B69A0E Upload Processed 221135
+nil
+</code></figure>
+
+<h4>Ізоляція та відмовостійкість потоків завантаження</h4>
+
+<p>Дана бібліотека переживає рестарти як всього серверу,
+так і окремих збоїв всередині окремих процесів завантаження для кожного файлу.
+Усі Erlang процеси бібліотеки створюються під <b>n2o</b> супервізором.</p>
+
+<figure><code>
+> :supervisor.which_children CRM
+[
+  {{:sev, "78317F66-127D-4601-9CA9-E956525A7D56"}, #PID<0.955.0>, :worker, [SEV.UP]},
+  {{:sev, "49DF6EA1-1783-4279-AE32-1152E2202B2B"}, #PID<0.927.0>, :worker, [SEV.DOWN]},
+  {{:sev, "187108DB-FBE4-4A7D-8AD5-A2DE2BDEAC0D"}, #PID<0.789.0>, :worker, [SEV.UP]},
+  {{:sev, "34239035"}, #PID<0.785.0>, :worker, [SEV]},
+  {{:sev, "34239036"}, #PID<0.107.0>, :worker, [SEV]},
+  {{:sev, "34239034"}, #PID<0.105.0>, :worker, [SEV]}
+]
+</code></figure>
+
+    <p>ДП "Інфотех"</p>
+
+  </section>
+</article>
+</main><footer>
+    Зроблено з любов'ю <span class="heart">❤</span> до N2O
+</footer></body></html>

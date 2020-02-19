@@ -167,17 +167,17 @@ nil
   def certify() do
     {:incoming, []} = SEV.inbox @to
     {:incoming, []} = SEV.inbox @from
-    x = SEV.NEW.all @from, @to
+    x = outgoing @from, @to
     :timer.sleep(60000)
     SEV.download_all @to
     :timer.sleep(60000)
-    SEV.REPLY.acks @to, @from, x
+    acks @to, @from, x
     :timer.sleep(120000)
     SEV.download_all @from
     :timer.sleep(60000) # 20 + 20
-    y = SEV.REPLY.all @to, @from, x
+    y = replies @to, @from, x
     :timer.sleep(120000)
-    SEV.REPLY.acks @from, @to, y
+    acks @from, @to, y
     :timer.sleep(120000)
     SEV.download_all @to
     :timer.sleep(60000)
@@ -185,7 +185,7 @@ nil
   end
 </code></figure>
 
-<figure><code>  def all(from, to) do
+<figure><code>  def outgoing(from, to) do
     {i, a, g, e} = {:sev.guid(), :sev.guid(), :sev.guid(), :sev.guid()}
     SEV.send(from, to, testInformation(i))
     SEV.send(from, to, testApproval(a))
@@ -206,7 +206,7 @@ nil
   end
 </code></figure>
 
-<figure><code>  def all(from, to, {i, a, g, e}) do
+<figure><code>  def replies(from, to, {i, a, g, e}) do
     {ni, na, nr, ng, ne} = {:sev.guid(), :sev.guid(), :sev.guid(), :sev.guid(), :sev.guid()}
     SEV.send(from, to, testInformation(ni, i))
     SEV.send(from, to, testApproval(na, a))

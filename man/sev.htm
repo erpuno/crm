@@ -145,6 +145,78 @@ nil
 ]
 </code></figure>
 
+<h3>СЕРТИФІКАЦІЯ</h3>
+
+<p>Тут дається опис повної перевірки усіх можливих
+протокольних повідомлень (не даються гарантії на повний простір
+повідомлень з варіацією усіх атрибутів). На верхньому рівні протоколу
+є два вида повідомлень: 0) нотифікації та 1) документи.
+Нотифифікації: 1) доставка, 2) прийняття, 3) реєстрація та 4) відхилення.
+Документи: 0) інформаційний лист, 1) погодження, 2) узагальнення, 3) доручення.
+Також існує п'ять документів-відповідей: чотири для документів,
+плюс один додатковий варіант для відхилення погодження.</p>
+
+<p>В процесі сертифікації передбачається перевірка 4 типів нотифікацій для
+усіх 9 типів повідомлень (вхідні документи та докменти відповіді). Разом з самими
+повідомленнями система СЕД повинна вміти відсилати та приймати по 45 різних типів пакетів.
+Загалом сертифікація передбачає траспортування 90 пакетів які валідуються наочно.</p>
+
+<h4>Скрипт сертифікації</h4>
+
+<figure><code>
+  def certify() do
+    {:incoming, []} = SEV.inbox @to
+    {:incoming, []} = SEV.inbox @from
+    x = SEV.NEW.all @from, @to
+    :timer.sleep(60000)
+    SEV.download_all @to
+    :timer.sleep(60000)
+    SEV.REPLY.acks @to, @from, x
+    :timer.sleep(120000)
+    SEV.download_all @from
+    :timer.sleep(60000) # 20 + 20
+    y = SEV.REPLY.all @to, @from, x
+    :timer.sleep(120000)
+    SEV.REPLY.acks @from, @to, y
+    :timer.sleep(120000)
+    SEV.download_all @to
+    :timer.sleep(60000)
+    SEV.download_all @from
+  end
+</code></figure>
+
+<figure><code>  def all(from, to) do
+    {i, a, g, e} = {:sev.guid(), :sev.guid(), :sev.guid(), :sev.guid()}
+    SEV.send(from, to, testInformation(i))
+    SEV.send(from, to, testApproval(a))
+    SEV.send(from, to, testGeneralization(g))
+    SEV.send(from, to, testExecutionTask(e))
+    {i, a, g, e}
+  end
+</code></figure>
+
+<figure><code>  def acks(from, to, mem) do
+    :erlang.tuple_to_list(mem)
+    |> Enum.map(fn guid ->
+      SEV.ack(from, to, guid, 1)
+      SEV.ack(from, to, guid, 2)
+      SEV.ack(from, to, guid, 3, "OK")
+      SEV.ack(from, to, guid, 4)
+    end)
+  end
+</code></figure>
+
+<figure><code>  def all(from, to, {i, a, g, e}) do
+    {ni, na, nr, ng, ne} = {:sev.guid(), :sev.guid(), :sev.guid(), :sev.guid(), :sev.guid()}
+    SEV.send(from, to, testInformation(ni, i))
+    SEV.send(from, to, testApproval(na, a))
+    SEV.send(from, to, testReject(nr, a))
+    SEV.send(from, to, testGeneralization(ng, g))
+    SEV.send(from, to, testExecutionTask(ne, e))
+    {ni, na, nr, ng, ne}
+  end
+</code></figure>
+
     <p>ДП "Інфотех"</p>
 
   </section>

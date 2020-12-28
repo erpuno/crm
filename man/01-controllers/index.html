@@ -39,6 +39,17 @@
   <section>
     <h3>Контролери сторінок</h3>
 
+    <p>Маршрути сторінок</p>
+
+    <figure><code>
+  def route(<<"ldap", _::binary>>), do: LDAP.Index
+  def route(<<"crm",  _::binary>>), do: CRM.Index
+  def route(<<"rmk",  _::binary>>), do: RMK.Index
+  def route(<<"kvs",  _::binary>>), do: KVS.Index
+  def route(<<"act",  _::binary>>), do: BPE.Actor
+  def route(<<"help", _::binary>>), do: HELP.Index
+    </code></figure>
+
     <h4>LDAP.Index</h4>
     <figure><img src="../../img/LDAP.PNG" /></figure>
     <figure><code>
@@ -167,6 +178,86 @@
   def event({:file_start, _, _, _, _})
   def event({:update_guid, _})
   def event({:attachment, :need_sign, file})
+    </code></figure>
+
+    <h4>KVS.Index</h4>
+    <figure><img src="../../img/KVS.PNG" /></figure>
+    <figure><code>
+  def event(:logout)
+  def event(:init)
+  def event(:ram)
+  def event(:user)
+  def event(:session)
+  def event(:enode)
+  def event(:disc)
+  def event(:cursors)
+  def event({:handle_meta, m, id, {raw, module, level}})
+  def event({:writers, module})
+  def event({:tree_command, :compact_all, module})
+  def event({:writer, i, c, dom, body, module})
+  def event({:link, feed0, parent, _, _, _})
+  def event({:link, i0, _, p, module})
+  def event({press, rid, KVS.reader(), p, feed, module})
+  def event({:link, root, 0, 100, module})
+  def event({:elements, [], feed, parent})
+  def event({:elements, elements, feed, parent})
+  def event({:sched, id, id_elem, proc_id})
+  def event({:hist, id, id_elem, proc_id})
+  def event({:procRec, id, id_elem, proc_id})
+  def event({:expandProc, _, _, _, _})
+  def event({:edit, _, _, _, _})
+  def event({:create, _, _, _, _})
+  def event({:create, _, _, _})
+  def event(:cancel)
+  def event({:cancel, _, _, _, _})
+  def event({:create_form, _, _, _})
+  def event({:expandRow, _, _, _, _, _})
+  def event({:editRow, _, _, _, _, _})
+  def event({:save, _, _, _, _})
+  def event({:delete, _, _, _, _})
+  def event({:subject_changed, _})
+  def event({:object_type_changed, _})
+  def event(NITRO.comboKey())
+  def event(NITRO.comboSelect())
+  def event({:tree_command, :compact_all, module})
+  def event({:tree_command, :expand_all, module})
+  def event({:tree_command, :raw, module})
+  def event({:tree_command, :desc, module})
+  def event({:click_tab, _})
+    </code></figure>
+
+    <h4>BPE.Actor</h4>
+    <figure><img src="../../img/ACT.PNG" /></figure>
+    <figure><code>
+  def event(:init) do
+  def event({:txs, id})
+  def event({:show_diagram, id})
+  def event(:set_color)
+    </code></figure>
+
+    <h4>HELP.Index</h4>
+    <figure><img src="../../img/HELP.PNG" /></figure>
+    <figure><code>
+  def event(:init)
+  def event(:writers)
+  def event({:writer, i, c, dom, body})
+  def event({:link, name, _, _})
+  def event({:link, name, _, _, _})
+  def event({:tree_command, :compact_all})
+  def event({:handle_meta, _, _, _})
+  def event(:logout)
+    </code></figure>
+
+    <h4>ROLE.Index</h4>
+    <figure><img src="../../img/ROLE.PNG" /></figure>
+    <figure><code>
+  def event(:init)
+  def event(:logout)
+  def event(:show_table)
+  def event(:close)
+  def event({:roles, rows_id})
+  def event(NITRO.comboKey())
+  def event(NITRO.comboSelect())
     </code></figure>
 
   </section>

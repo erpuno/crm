@@ -33,8 +33,189 @@
 <main>
 <article>
   <section>
-    <h3>СЕВ ОВВ</h3>
+    <h3>СЕВ ОВВ 2.0 Клієнт</h3>
 
+<p>Бібліотека підтримки національного сервісу СЕВ ОВВ
+версії 2.0 (dir.gov.ua) для розробників та інтеграторів СЕД систем
+на мовах Erlang і Elixir. Сервіс верхнього рівня складається з наступних функцій:</p>
+
+<ul><li><b>inbox</b> from, count=100</li>
+<li><b>send</b> from, to, document</li>
+<li><b>ack</b> from, to, msg_id, type, regnum=""</li>
+<li><b>download</b> from, msg_id, delete=1</li>
+<li><b>download_all</b> from</li></ul>
+
+<h4>Перевірка вхідної скриньки облікового запису</h4>
+
+<p>Перший параметр -- ЄРДПО організації зареєстрованої в СЕВ.
+Другий параметр -- перші N повідомлень, які цікавлять.</p>
+
+<figure><code>
+> SEV.inbox "34239035"
+{:incoming,
+ [
+   CreationDate: "2020-02-10T05:25:21Z",
+   Creator: "Sev",
+   Format: "Plain",
+   FromOrgId: "34239036",
+   FromSysId: "fcabd96e-06b5-47c3-801c-b5da8caab7c7",
+   MessageId: "49DF6EA1-1783-4279-AE32-1152E2202B2B",
+   Size: "226716",
+   ToOrgId: "34239035",
+   ToSysId: "99999999",
+   Type: "Document"
+ ]}
+</code></figure>
+
+<h4>Завантаження повідомлення</h4>
+
+<p>Перший параметр -- ЄРДПО організації зареєстрованої в СЕВ.</p>
+
+<figure><code>
+> SEV.download "34239035", "49DF6EA1-1783-4279-AE32-1152E2202B2B"
+{:downloading, #PID<0.926.0>}
+iex(26)>
+03:28:00.860 [info]  SEV {partial,{download,226716,0,226716,<<"37851912">>,226716,0}}
+03:28:05.686 [info]  SEV {final,{download,226716,226716,0,<<"37851912">>,0,0}}
+03:28:05.844 [info]  SEV hash verified 49DF6EA1-1783-4279-AE32-1152E2202B2B
+nil
+</code></figure>
+
+<h4>Вивантаження повідомлення</h4>
+
+<p>Перший параметр -- ЄРДПО організації зареєстрованої в СЕВ від імені якої посилається повідомлення.
+Другий параметр -- ЄРДПО організації зареєстрованої в СЕВ, адресату повідомлення.
+Третій параметр -- Бізнес-об'єкт документу як Erlang кортеж.</p>
+
+<figure><code>
+defmodule Test do
+  require ERP
+  def testDoc(guid) do
+    ERP.sevDoc(
+      date: "2020-02-10",
+      id: "12/19/12-15",
+      kind: "Лист",
+      annotation: "Інформування",
+      msg_type: 1,
+      msg_acknow: 2,
+      guid: guid,
+      attachments: [
+        ERP.fileDesc(
+          id: :sev.guid(),
+          seq_id: 1000,
+          fileName: "Повідомлення.pdf",
+          signed: "2020-02-10T13:12:07",
+          type: "pdf"
+        )
+      ]
+    )
+  end
+end
+</code></figure>
+
+<figure><code>
+> SEV.send "34239035", "34239036", Test.testDoc(:sev.guid)
+{:uploading, #PID<0.954.0>}
+iex(28)>
+03:29:52.332 [info]  SEV {partial,{upload,6428292,0,2500000,<<"37851914">>,6428292}}
+03:29:54.370 [info]  SEV {partial,{upload,6428292,2500000,2500000,<<"37851914">>,3928292}}
+03:29:56.379 [info]  SEV {partial,{upload,6428292,5000000,1428292,<<"37851914">>,1428292}}
+03:30:04.454 [info]  SEV {final,{upload,6428292,6428292,0,<<"37851914">>,0}}
+03:30:04.779 [info]  SEV 91844747-BF51-4804-895E-3A6844B69A0E Upload Processed 221135
+nil
+</code></figure>
+
+<h4>Ізоляція та відмовостійкість потоків завантаження</h4>
+
+<p>Дана бібліотека переживає рестарти як всього серверу,
+так і окремих збоїв всередині окремих процесів завантаження для кожного файлу.
+Усі Erlang процеси бібліотеки створюються під <b>n2o</b> супервізором.</p>
+
+<figure><code>
+> :supervisor.which_children SEV
+[
+  {{:sev, "78317F66-127D-4601-9CA9-E956525A7D56"}, #PID<0.955.0>, :worker, [SEV.UP]},
+  {{:sev, "49DF6EA1-1783-4279-AE32-1152E2202B2B"}, #PID<0.927.0>, :worker, [SEV.DOWN]},
+  {{:sev, "187108DB-FBE4-4A7D-8AD5-A2DE2BDEAC0D"}, #PID<0.789.0>, :worker, [SEV.UP]},
+  {{:sev, "34239035"}, #PID<0.785.0>, :worker, [SEV]},
+  {{:sev, "34239036"}, #PID<0.107.0>, :worker, [SEV]},
+  {{:sev, "34239034"}, #PID<0.105.0>, :worker, [SEV]}
+]
+</code></figure>
+
+<h3>СЕРТИФІКАЦІЯ</h3>
+
+<p>Тут дається опис повної перевірки усіх можливих
+протокольних повідомлень (не даються гарантії на повний простір
+повідомлень з варіацією усіх атрибутів). На верхньому рівні протоколу
+є два вида повідомлень: 0) нотифікації та 1) документи.
+Нотифифікації: 1) доставка, 2) прийняття, 3) реєстрація та 4) відхилення.
+Документи: 0) інформаційний лист, 1) погодження, 2) узагальнення, 3) доручення.
+Також існує п'ять документів-відповідей: чотири для документів,
+плюс один додатковий варіант для відхилення погодження.</p>
+
+<p>В процесі сертифікації передбачається перевірка 4 типів нотифікацій для
+усіх 9 типів повідомлень (вхідні документи та докменти відповіді). Разом з самими
+повідомленнями система СЕД повинна вміти відсилати та приймати по 45 різних типів пакетів.
+Загалом сертифікація передбачає траспортування 90 пакетів які валідуються наочно.</p>
+
+<h4>Скрипт сертифікації</h4>
+
+<figure><code>
+  def certify() do
+    {:incoming, []} = SEV.inbox @to
+    {:incoming, []} = SEV.inbox @from
+    x = outgoing @from, @to
+    :timer.sleep(60000)
+    SEV.download_all @to
+    :timer.sleep(60000)
+    acks @to, @from, x
+    :timer.sleep(120000)
+    SEV.download_all @from
+    :timer.sleep(60000) # 20 + 20
+    y = replies @to, @from, x
+    :timer.sleep(120000)
+    acks @from, @to, y
+    :timer.sleep(120000)
+    SEV.download_all @to
+    :timer.sleep(60000)
+    SEV.download_all @from
+  end
+</code></figure>
+
+<figure><code>  def outgoing(from, to) do
+    {i, a, g, e} = {:sev.guid(), :sev.guid(), :sev.guid(), :sev.guid()}
+    SEV.send(from, to, testInformation(i))
+    SEV.send(from, to, testApproval(a))
+    SEV.send(from, to, testGeneralization(g))
+    SEV.send(from, to, testExecutionTask(e))
+    {i, a, g, e}
+  end
+</code></figure>
+
+<figure><code>  def acks(from, to, mem) do
+    :erlang.tuple_to_list(mem)
+    |> Enum.map(fn guid ->
+      SEV.ack(from, to, guid, 1)
+      SEV.ack(from, to, guid, 2)
+      SEV.ack(from, to, guid, 3, "OK")
+      SEV.ack(from, to, guid, 4)
+    end)
+  end
+</code></figure>
+
+<figure><code>  def replies(from, to, {i, a, g, e}) do
+    {ni, na, nr, ng, ne} = {:sev.guid(), :sev.guid(), :sev.guid(), :sev.guid(), :sev.guid()}
+    SEV.send(from, to, testInformation(ni, i))
+    SEV.send(from, to, testApproval(na, a))
+    SEV.send(from, to, testReject(nr, a))
+    SEV.send(from, to, testGeneralization(ng, g))
+    SEV.send(from, to, testExecutionTask(ne, e))
+    {ni, na, nr, ng, ne}
+  end
+</code></figure>
+
+    <p>ДП "Інфотех"</p>
 
   </section>
 </article>

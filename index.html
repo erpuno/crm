@@ -249,31 +249,17 @@ $ open http://localhost:50111/app/crm.htm</code></figure>
    <a href="man/12-auth/index.html">12. X.509 Аутентифікація</a><br>
 </p>
 
-    <h3>СЕД</h3>
+    <h3>Інсталяція</h3>
 
     <p>Приклад системи, MIA:Документообіг ДП "Інфотех", побудованої на базі відкритої
-       платформи CRM для Ericsson Erlang/OTP.</p>
+       платформи CRM для Ericsson Erlang/OTP. В сутності система підтримки зв'язків
+       з користувачами це система документообігу</p>
 
-<p>В сутності система підтримки зв'язків з користувачами це система документообігу</p>
-
-<h4>Підготовка</h4>
-
-<p>Підтримується розробка та впровадження на платформах Windows, Windows Subsystem for Linux, Linux та Mac.</p>
-
-<p><ul><li>Erlang 22.1</li>
-<li>Elixir 1.9</li>
-<li>CMake 3.15</li>
-<li>libcsv 3.0</li></ul></p>
-
-<h4>Пререквізити для Ubuntu 19.10</h4>
+<h4>Пререквізити для Ubuntu</h4>
 
 <figure><code>$ sudo apt install erlang elixir build-essential libcsv3 libcsv-dev cmake
+$ sudo apt install unoconv imagemagick
 </code></figure>
-
-<h4>Інші системи</h4>
-
-<p>На інших системах радимо використовувати
-<a href="https://www.erlang-solutions.com/resources/download.html">білди Erlang та Elixir від Erlang Solutions</a>.</p>
 
 <h4>Компіляція та запуск</h4>
 
@@ -284,11 +270,13 @@ $ iex -S mix
 
 <h4>Публікація</h4>
 
+<p>Запуск екземпляру</p>
+
 <figure><code>$ mix release
 $ _build/dev/rel/crm/bin/crm daemon
 </code></figure>
 
-<h4>Підключення до екземпляру</h4>
+<p>Підключення до екземпляру</p>
 
 <figure><code>$ _build/dev/rel/crm/bin/crm remote
 </code></figure>
@@ -297,7 +285,7 @@ $ _build/dev/rel/crm/bin/crm daemon
 
 <h4>Інсталяція OnlyOffice</h4>
 
-<p>Найпростійший спосіб на Ubuntu 19.10 --- це використати <b>snap</b>:</p>
+<p>Найпростійший спосіб на Ubuntu &mdash; це використати <b>snap</b>:</p>
 
 <figure><code>$ sudo snap install onlyoffice-ds
 </code></figure>

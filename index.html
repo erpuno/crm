@@ -261,18 +261,12 @@ $ open http://localhost:50111/app/crm.htm</code></figure>
 $ sudo apt install unoconv imagemagick onlyoffice-ds
 </code></figure>
 
-<h4>Компіляція та запуск</h4>
-
-<figure><code>$ mix deps.get
-$ mix compile
-$ iex -S mix
-</code></figure>
-
 <h4>Публікація</h4>
 
-<p>Запуск екземпляру</p>
+<p>Компіляція та запуск екземпляру</p>
 
-<figure><code>$ mix release
+<figure><code>$ mix deps.get
+$ mix release
 $ _build/dev/rel/crm/bin/crm daemon
 </code></figure>
 
@@ -281,7 +275,7 @@ $ _build/dev/rel/crm/bin/crm daemon
 <figure><code>$ _build/dev/rel/crm/bin/crm remote
 </code></figure>
 
-<p>Тоді відкрийте посилання <a href="http://localhost:50111/app/ldap.htm">localhost:50111/app/ldap.htm</a>.</p>
+<p>Після цього відкрийте посилання <a href="http://localhost:50111/app/ldap.htm">localhost:50111/app/ldap.htm</a>.</p>
 
 <h4>Розробники системи</h4>
 

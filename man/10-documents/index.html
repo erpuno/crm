@@ -52,16 +52,97 @@
     <h4>Вихідний документ</h4>
     <figure><img src="../../img/DOCS.OUTPUT.PNG"></figure>
     <figure><code>
+      FORM.formReg(
+        id: :outputOrder,
+        name: "Вихідний документ",
+        horizontal: CRM.Forms.OutputOrder,
+        vertical: CRM.Forms.OutputOrder,
+        compact: CRM.Forms.OutputOrder,
+        instance: ERP.outputOrder(),
+        proc: Output.Proc,
+        id_rules: "ВИХ",
+        attach_req: false
+      ),
     </code></figure>
 
     <h4>Внутрішній документ</h4>
     <figure><img src="../../img/DOCS.INTERNAL.PNG"></figure>
     <figure><code>
+      FORM.formReg(
+        id: :internalDoc,
+        name: "Внутрішній документ",
+        horizontal: CRM.Forms.InternalDoc,
+        vertical: CRM.Forms.InternalDoc,
+        compact: CRM.Forms.InternalDoc,
+        instance: ERP.internalDoc(),
+        proc: Internal.Proc,
+        id_rules: "ВД",
+        attach_req: false
+      ),
     </code></figure>
 
     <h4>Організаційно-розпорядний документ</h4>
     <figure><img src="../../img/DOCS.ORG.PNG"></figure>
     <figure><code>
+      FORM.formReg(
+        id: :orgDoc,
+        name: "Організаційно-розпорядчий документ",
+        horizontal: OrgDoc,
+        vertical: OrgDoc,
+        compact: [],
+        instance: ERP.orgDoc(),
+        proc: Org.Proc,
+        id_rules: "ОР",
+        attach_req: false
+      ),
+    </code></figure>
+
+    <h4>Запит, звернення народного депутата</h4>
+    <figure><img src="../../img/DOCS.DEPUTY.PNG"></figure>
+    <figure><code>
+      FORM.formReg(
+        id: :deputyInquire,
+        name: "Запит, звернення народного депутата",
+        horizontal: CRM.Forms.DeputyInquire,
+        vertical: CRM.Forms.DeputyInquire,
+        compact: CRM.Forms.DeputyInquire,
+        instance: ERP.deputyInquire(),
+        proc: Input.Proc,
+        id_rules: "ЗД",
+        attach_req: true
+      ),
+    </code></figure>
+
+    <h4>Запит на публічну інформацію</h4>
+    <figure><img src="../../img/DOCS.PUBLIC.PNG"></figure>
+    <figure><code>
+      FORM.formReg(
+        id: :publicInquire,
+        name: "Запит на публічну інформацію",
+        horizontal: CRM.Forms.PublicInquire,
+        vertical: CRM.Forms.PublicInquire,
+        compact: CRM.Forms.PublicInquire,
+        instance: ERP.publicInquire(),
+        proc: Input.Proc,
+        id_rules: "ПІ",
+        attach_req: true
+      ),
+    </code></figure>
+
+    <h4>Адвокатський запит</h4>
+    <figure><img src="../../img/DOCS.ESQ.PNG"></figure>
+    <figure><code>
+      FORM.formReg(
+        id: :esqInquire,
+        name: "Адвокатський запит",
+        horizontal: CRM.Forms.EsqInquire,
+        vertical: CRM.Forms.EsqInquire,
+        compact: CRM.Forms.EsqInquire,
+        instance: ERP.esqInquire(),
+        proc: Input.Proc,
+        id_rules: "ЗА",
+        attach_req: true
+      ),
     </code></figure>
 
      <br/>

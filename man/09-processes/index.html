@@ -82,24 +82,74 @@
 
         <h4>Процес обробки вхідних документів</h4>
         <figure><img src="../../img/proc_input.png"></figure>
+    <figure><code>
+  def action({:event, 'Resolution', docs},     BPE.process())
+  def action({:event, 'Implementation', docs}, BPE.process())
+  def action({:event, from, docs},             BPE.process())
+  def action({:request, _, 'Registration'},    BPE.process())
+  def action({:request, _, 'Archive'},         BPE.process())
+  def action({:request, 'Registration', 'Resolution'},   BPE.process())
+  def action({:request, 'gwConfirmation', 'Resolution'}, BPE.process())
+  def action({:request, _, 'Implementation'},            BPE.process())
+    </code></figure>
 
         <h4>Процес обробки вихідних документів</h4>
         <figure><img src="../../img/proc_output.png"></figure>
+    <figure><code>
+  def action({:event, 'Agreement', docs}, BPE.process())
+  def action({:event, 'Signing', docs},   BPE.process())
+  def action({:request, 'Created', 'Development'},    BPE.process())
+  def action({:request, 'Development', 'gwAgreed'},   BPE.process())
+  def action({:request, 'gwAgreed', 'Agreement'},     BPE.process())
+  def action({:request, 'gwAgreed', 'Development'},   BPE.process())
+  def action({:request, _, 'Signing'},                BPE.process())
+  def action({:request, 'gwSigned', 'Development'},   BPE.process())
+  def action({:request, 'gwSigned', 'Registration'},  BPE.process())
+  def action({:request, 'gwIsUserSEV', 'SendingSEV'}, BPE.process())
+  def action({:request, _, 'Archive'},                BPE.process())
+    </code></figure>
 
         <h4>Процес обробки організаційно-розпорядних документів</h4>
         <figure><img src="../../img/proc_org.png"></figure>
+    <figure><code>
+    </code></figure>
 
         <h4>Процес обробки внутрішніх документів</h4>
         <figure><img src="../../img/proc_internal.png"></figure>
+    <figure><code>
+  def action({:event, 'Agreement', docs},      BPE.process())
+  def action({:event, 'Signing', docs},        BPE.process())
+  def action({:event, 'Resolution', docs},     BPE.process())
+  def action({:event, 'Implementation', docs}, BPE.process())
+  def action({:request, 'Created', _},         BPE.process())
+  def action({:request, _, 'Agreement'},       BPE.process())
+  def action({:request, _, 'Signing'},         BPE.process())
+  def action({:request, _, 'Implementation'},  BPE.process())
+  def action({:request, _, 'Archive'},         BPE.process())
+  def action({:request, 'Registration', 'Resolution'}, BPE.process())
+    </code></figure>
 
         <h4>Процес обробки додаткових документів</h4>
         <figure><img src="../../img/proc_add.png"></figure>
+    <figure><code>
+    </code></figure>
 
         <h4>Процес обробки вхідної СЕВ кореспонденції</h4>
         <figure><img src="../../img/proc_sev_in.png"></figure>
+    <figure><code>
+  def action({:request, 'Download', _},  BPE.process())
+  def action({:request, 'Register', _},  BPE.process())
+  def action({:request, 'Reject', _},    BPE.process())
+  def action({:request, 'Created', 'Download'},    BPE.process())
+  def action({:request, 'gwDecision', 'Register'}, BPE.process())
+    </code></figure>
 
         <h4>Процес обробки вихідної СЕВ кореспонденції</h4>
         <figure><img src="../../img/proc_sev_out.png"></figure>
+    <figure><code>
+  def action({:request, 'Created', _}, BPE.process())
+  def action({:request, 'SendSEV', _}, BPE.process())
+    </code></figure>
 
      <br/>
      <br/>

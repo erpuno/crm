@@ -43,24 +43,57 @@
     <p>Контрольний елемент управління ділопроцесом.</p>
     <figure><img src="../../img/BPE.CONTROL.PNG" /></figure>
     <figure><code>
+  def event({:sevSent, id0, :rmk}) do
+  def event({:sevSent, id})
+  def event({:expandBpe, id, row_id})
+  def event({:expandBpe, id, row_id, doc})
+  def event({:control, :return, pid, nexts})
+  def event({:control, :remove, pid})
+  def event({:proj, :reject = action, {atom, doc_id, pid0}})
+  def event({:proj, action, {atom, doc_id, pid0}})
+  def event({:signatureResult, signatures, {x, y, pid0}})
+  def event({:doc, action, {atom, doc_id, pid, row_id}})
+  def event({:doc, :create = action, {[], [], id}})
+  def event({:doc, :create = action, {[], [], id, to_select_id}})
+  def event({:doc, :del, {pid0, dtype, did}})
+  def event({:proc, :del, pid0})
+  def event({:table_complete, id, flow_id, steps})
+  def event({:sev, :reject, id})
+  def event({:expandBpe, id, ix})
+  def event({:sev, :register, id})
+  def event({:expandBpe, id, ix})
+  def event({:complete, pid, flow, steps})
     </code></figure>
 
     <h4>BPE.Monitor</h4>
     <p>Контрольний елемент відображення ділопроцесів РМК картки.</p>
     <figure><img src="../../img/RMK.MONITOR.PNG?v=1" /></figure>
     <figure><code>
+  def event({:update_monitor, proc_id})
+  def event({:expandBpe, pid, _})
+  def event({:link, pid}) do
     </code></figure>
 
     <h4>CRM.Search</h4>
     <p>Контрольний елемент пошуку документів.</p>
     <figure><img src="../../img/SEARCH.CONTROL.PNG" /></figure>
     <figure><code>
+  def event({:search, mod, _, _})
+  def event(:show_templates)
+  def event(:hide_templates)
+  def event({:save_template, field_name})
     </code></figure>
 
     <h4>CRM.FileUpload</h4>
     <p>Контрольний елемент завантаження файлів.</p>
     <figure><img src="../../img/FILE.UPLOAD.PNG" /></figure>
     <figure><code>
+  def event({:doc, :delete_attachment, {id, name}, action, type, doc_id})
+  def event({:ftp_init, ftp_file})
+  def event({:file_init, fileName, guid, size})
+  def event({:ftp_signature, guid, signature, sign_time})
+  def event(N2O.ftp())
+  def event({:update_guid, {preguid, guid, action, docType, doc_id}})
     </code></figure>
 
     <h4>NITRO.Table</h4>
@@ -79,18 +112,42 @@
     <p>Контрольний елемент відображення серверних фідів.</p>
     <figure><img src="../../img/NITRO.COMBO.PNG" /></figure>
     <figure><code>
+  def event(NITRO.comboKey())
+  def event(NITRO.comboSelect())
     </code></figure>
 
     <h4>CRM.Control</h4>
     <p>Події сторінки зі списком документів (CRM.HTM).</p>
     <figure><img src="../../img/CRM.CONTROL.PNG" /></figure>
     <figure><code>
+  def event(:logout) do
+  def event({:update_proc, id, :none})
+  def event({:update_proc, id, dom})
+  def event({:add_proc, id, dom})
+  def event({:update_color, id, color_id})
+  def event(:init)
+  def event({:update_tab, ERP.doclink(proc: pid), subfeed})
+  def event({:create, mod, doc_id, _proc_id})
+  def event({:createForm, input_id, rec_name, feed, sources, options})
+  def event({:cancelForm, formId})
+  def event({:edit, mod, doc_id, proc_id})
+  def event({:view, _mod, _doc_id, _proc_id})
+  def event({:cancel, action, mod, doc_id, proc_id})
+  def event({:combo, id, type})
+  def event({:replicate, pid, doc_type, doc_id})
+  def event({:region_changed, mod, type, _})
+  def event({:control_changed, mod, type, _val})
+  def event({:control_remove, mod, type, _val})
+  def event({:send_via_sev, mod, type, val})
     </code></figure>
 
     <h4>RMK.Control</h4>
     <p>Події сторінки реєстраційно-моніторингової картки (RMK.HTM).</p>
     <figure><img src="../../img/RMK.CONTROL.PNG" /></figure>
     <figure><code>
+  def event(:init)
+  def event(:logout)
+  def event({:load_rmk, proc_id})
     </code></figure>
 
   </section>

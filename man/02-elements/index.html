@@ -43,26 +43,20 @@
     <p>Контрольний елемент управління ділопроцесом.</p>
     <figure><img src="../../img/BPE.CONTROL.PNG" /></figure>
     <figure><code>
-  def event({:sevSent, id0, :rmk}) do
+  def event({:sev, :reject, id})
+  def event({:sev, :register, id})
+  def event({:sevSent, id, :rmk}) do
   def event({:sevSent, id})
   def event({:expandBpe, id, row_id})
   def event({:expandBpe, id, row_id, doc})
   def event({:control, :return, pid, nexts})
   def event({:control, :remove, pid})
-  def event({:proj, :reject = action, {atom, doc_id, pid0}})
   def event({:proj, action, {atom, doc_id, pid0}})
-  def event({:signatureResult, signatures, {x, y, pid0}})
+  def event({:signatureResult, signatures, {x, y, pid}})
   def event({:doc, action, {atom, doc_id, pid, row_id}})
-  def event({:doc, :create = action, {[], [], id}})
-  def event({:doc, :create = action, {[], [], id, to_select_id}})
-  def event({:doc, :del, {pid0, dtype, did}})
   def event({:proc, :del, pid0})
-  def event({:table_complete, id, flow_id, steps})
-  def event({:sev, :reject, id})
-  def event({:expandBpe, id, ix})
-  def event({:sev, :register, id})
-  def event({:expandBpe, id, ix})
   def event({:complete, pid, flow, steps})
+  def event({:table_complete, id, flow_id, steps})
     </code></figure>
 
     <h4>BPE.Monitor</h4>
@@ -121,23 +115,22 @@
     <figure><img src="../../img/CRM.CONTROL.PNG" /></figure>
     <figure><code>
   def event(:logout) do
-  def event({:update_proc, id, :none})
+  def event(:init)
   def event({:update_proc, id, dom})
   def event({:add_proc, id, dom})
   def event({:update_color, id, color_id})
-  def event(:init)
   def event({:update_tab, ERP.doclink(proc: pid), subfeed})
-  def event({:create, mod, doc_id, _proc_id})
+  def event({:create, mod, doc_id, proc_id})
   def event({:createForm, input_id, rec_name, feed, sources, options})
   def event({:cancelForm, formId})
   def event({:edit, mod, doc_id, proc_id})
-  def event({:view, _mod, _doc_id, _proc_id})
+  def event({:view, mod, doc_id, proc_id})
   def event({:cancel, action, mod, doc_id, proc_id})
   def event({:combo, id, type})
   def event({:replicate, pid, doc_type, doc_id})
-  def event({:region_changed, mod, type, _})
-  def event({:control_changed, mod, type, _val})
-  def event({:control_remove, mod, type, _val})
+  def event({:region_changed, mod, type, val})
+  def event({:control_changed, mod, type, val})
+  def event({:control_remove, mod, type, val})
   def event({:send_via_sev, mod, type, val})
     </code></figure>
 

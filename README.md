@@ -1,5 +1,5 @@
-CRM: Customer Relationship Management
-=====================================
+CRM: CRM Ukrainian Govermental Document Management
+==================================================
 
 Credits
 -------
@@ -7,4 +7,3 @@ Credits
 * Maxim Sokhatsky
 
 OM A HUM
-

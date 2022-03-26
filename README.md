@@ -1,5 +1,5 @@
-CRM: CRM Ukrainian Govermental Document Management
-==================================================
+CRM Ukrainian Govermental Document Management
+=============================================
 
 Credits
 -------

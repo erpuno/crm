@@ -122,14 +122,14 @@ $ ls -1 -S
 /c_src
 /config
 /deps
-/documents
+/etc
 /include
 /lib
 /priv
 /rel
 /rocksdb
+/sharp
 /src
-/test
 CHANGELOG
 mix.exs
 README.md

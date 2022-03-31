@@ -6,13 +6,14 @@ CRM: Ukrainian Govermental Document Management
 * Deploy
 * Operate
 
-The МІА:Документообіг [CRM.ERP.UNO] in essense is
-the system for managing documents and activities its implies.
+The <a href="https://infotech.gov.ua/projects/mia-document-management">МІА: Документообіг</a>
+[<a href="https://crm.erp.uno/">CRM.ERP.UNO</a>] in essense
+is the system for managing documents and activities its implies.
 
 APT Prerequisites
 -----------------
 
-The application supports development on Windows, WSL, Linux or Mac.
+The application supports development on WSL, Linux or Mac.
 
 * Erlang 22.0
 * Elixir 1.9

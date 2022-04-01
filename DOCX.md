@@ -38,12 +38,17 @@ Microsoft.NETCore.App 3.1.5 [/home/maxim/.dotnet/shared/Microsoft.NETCore.App]
 
 ## Compilation
 
-Parameters are passed as command line arguments. Table fields are passed as CSV files.
+Get sources and build:
 
 ```
 $ git clone git://github.com/erpuno/docx
 $ cd docx
+$ dotnet build docx.sln
+```
 
+Parameters are passed as command line arguments. Table fields are passed as CSV files.
+
+```
 $ cat firestarter.sh
 #!/bin/sh
 
@@ -62,6 +67,7 @@ cd bin/Debug/netcoreapp3.1
 ls -l *.docx
 ```
 
+
 ## Invocation
 
 ```
@@ -73,12 +79,6 @@ Year,Brand,Model,Desc,Price
 ```
 
 During run you should get out.docx with substituted template parameters.
-
-```
-$ dotnet build docx.sln
-```
-
-
 
 ```
 $ ./firestarter

@@ -275,7 +275,7 @@ $ open http://loc:50111/app/crm.htm</code></figure>
 
 <p>Тут зібрана інформація про модулі інформаційної системи МІА:СЕД
 які представлені в детальному опису архітектури в пакеті документації по
-комплексним засобам захисту (КЗЗ) продукту компанії ДП "ІНФОТЕХ" &mdash; МІА:СЕД.
+комплексним засобам захисту (КЗЗ) продукту компанії ДП «ІНФОТЕХ» &mdash; МІА:СЕД.
 Система складається з обмеженого набору модулів (100 модулів), який поністю
 покриває функціональні вимоги Постанови КМУ №55.</p>
 
@@ -359,19 +359,38 @@ $ open http://loc:50111/app/crm.htm</code></figure>
 
     <h3>Інсталяція</h3>
 
-    <p>Приклад системи, MIA:Документообіг ДП "Інфотех", побудованої на базі відкритої
-       платформи CRM для Ericsson Erlang/OTP. В сутності система підтримки зв'язків
-       з користувачами це система документообігу</p>
+    <p>Приклад системи, MIA:Документообіг ДП «ІНФОТЕХ», побудованої на базі відкритої
+       платформи CRM для Ericsson Erlang/OTP. </p>
 
 <h4>Пререквізити для Ubuntu</h4>
 
-<figure><code>$ sudo apt install erlang elixir build-essential libcsv3 libcsv-dev cmake
-$ sudo apt install unoconv imagemagick onlyoffice-ds
+<figure><code>$ sudo apt install erlang elixir build-essential libcsv3 libcsv-dev cmake unoconv
+$ sudo snap install onlyoffice-ds
 </code></figure>
 
 <h4>Публікація</h4>
 
 <p>Компіляція та запуск екземпляру</p>
+
+<figure><code>
+  def deps() do
+    [
+      {:cowboy, "~> 2.9.0"},      {:cowlib, "~> 2.11.0"},
+      {:rocksdb, "~> 1.6.0"},     {:sax, "~> 1.0.0"},
+      {:ca, "~> 1.11.0"},         {:asic, "~> 0.4.1"},
+      {:barlix2, "~> 0.6.0"},     {:qrcode, "~> 0.1"},
+      {:n2o, "~> 8.12.1"},        {:soa, "~> 0.1.7"},
+      {:jsone, "~> 1.5.1"},       {:bpe, "7.6.3"},
+      {:rpc, "~> 3.11.1"},        {:etop, "~> 0.7"},
+      {:kvs, "~> 9.7.0"},         {:smtp, "~> 1.1.2"},
+      {:pop3, "~> 2.1.0"},        {:nitro, "~> 7.7.1"},
+      {:form, "~> 7.7.0"},        {:erz, "~> 0.7.0"},
+      {:ecsv, "~> 1.4.2"},        {:koatuu, "~> 0.11.0"},
+      {:addr, "~> 0.11.0"},       {:emqtt, "~> 2.7.0"}
+    ]
+  end
+
+</code></figure>
 
 <figure><code>$ mix deps.get
 $ mix release
